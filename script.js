@@ -1,8 +1,5 @@
-/**
- * Client-side progressive enhancement.
- * Set FORM_ENDPOINT to a real POST endpoint when a backend is available.
- */
-const FORM_ENDPOINT = "";
+// Replace YOUR_FORM_ID with the endpoint ID from the CodeNest form in Formspree.
+const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
 
 const form = document.getElementById("contactForm");
 const formMessage = document.getElementById("formMessage");
@@ -10,27 +7,41 @@ const formMessage = document.getElementById("formMessage");
 function showFormMessage(message, type) {
   formMessage.className = `alert custom-alert mt-3 ${type}`;
   formMessage.setAttribute("role", type === "alert-danger" ? "alert" : "status");
-  formMessage.innerHTML = `<i class="bi ${type === "alert-success" ? "bi-check-circle-fill" : "bi-info-circle-fill"} me-2" aria-hidden="true"></i>${message}`;
+  formMessage.classList.remove("d-none");
+  const icon = document.createElement("i");
+  icon.className = `bi ${type === "alert-success" ? "bi-check-circle-fill" : "bi-info-circle-fill"} me-2`;
+  icon.setAttribute("aria-hidden", "true");
+  formMessage.replaceChildren(icon, document.createTextNode(message));
   formMessage.focus();
 }
 
 function validateField(field) {
-  field.classList.toggle("is-invalid", !field.checkValidity());
-  field.classList.toggle("is-valid", field.checkValidity());
-  return field.checkValidity();
+  if (field.id === "name" || field.id === "message") {
+    const minimumLength = Number(field.minLength);
+    const trimmedLength = field.value.trim().length;
+    field.setCustomValidity(trimmedLength < minimumLength
+      ? `Escribe al menos ${minimumLength} caracteres.`
+      : "");
+  }
+
+  const isValid = field.checkValidity();
+  field.classList.toggle("is-invalid", !isValid);
+  field.classList.toggle("is-valid", isValid && field.value.trim().length > 0);
+  return isValid;
 }
 
 if (form) {
-  form.querySelectorAll("input, select, textarea").forEach((field) => {
+  const fields = [...form.querySelectorAll("input:not([type='hidden']), select, textarea")];
+  const submitButton = form.querySelector("button[type='submit']");
+
+  fields.forEach((field) => {
     field.addEventListener("blur", () => validateField(field));
     field.addEventListener("input", () => {
       if (field.classList.contains("is-invalid")) validateField(field);
     });
   });
-
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const fields = [...form.querySelectorAll("input, select, textarea")];
     const isValid = fields.map(validateField).every(Boolean);
 
     if (!isValid) {
@@ -39,23 +50,32 @@ if (form) {
       return;
     }
 
-    const data = Object.fromEntries(new FormData(form).entries());
-    if (!FORM_ENDPOINT) {
-      showFormMessage("El formulario está listo. Para recibir mensajes, configura FORM_ENDPOINT en script.js y conecta tu backend.", "alert-success");
-      console.info("Formulario validado (sin envío):", data);
+    if (form.elements.company.value) {
+      form.reset();
       return;
     }
 
-    const submitButton = form.querySelector("button[type='submit']");
+    if (FORM_ENDPOINT.includes("YOUR_FORM_ID")) {
+      showFormMessage("El formulario todavía no está conectado. Escríbenos directamente al correo de contacto.", "alert-danger");
+      return;
+    }
+
     submitButton.disabled = true;
     submitButton.textContent = "Enviando…";
     try {
+      const data = new FormData(form);
+      fields.forEach((field) => data.set(field.name, field.value.trim()));
       const response = await fetch(FORM_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers: { Accept: "application/json" },
+        body: data,
       });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const result = await response.json();
+      if (!response.ok) {
+        const errorMessage = result.errors?.map((item) => item.message).join(" ") || `HTTP ${response.status}`;
+        throw new Error(errorMessage);
+      }
+
       form.reset();
       fields.forEach((field) => field.classList.remove("is-valid"));
       showFormMessage("Mensaje enviado correctamente. Pronto te responderemos.", "alert-success");
@@ -64,7 +84,7 @@ if (form) {
       showFormMessage("No pudimos enviar el mensaje. Inténtalo de nuevo o escríbenos por correo.", "alert-danger");
     } finally {
       submitButton.disabled = false;
-      submitButton.textContent = "Preparar mensaje";
+      submitButton.textContent = "Enviar mensaje";
     }
   });
 }

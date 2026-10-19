@@ -36,15 +36,25 @@ Después abre <http://localhost:8000>.
 
 ## Formulario y despliegue
 
-El formulario se valida en el navegador, pero no simula un envío real por defecto. Antes de publicar, configura `FORM_ENDPOINT` en `script.js` con un endpoint `POST` propio que acepte JSON (`name`, `email`, `interest` y `message`). La interfaz comunica explícitamente al usuario cuando solo se ha validado localmente.
+El formulario valida nombre, correo, ruta de interés y mensaje en el navegador; recorta espacios al enviar, limita la longitud de los campos y usa un campo trampa para reducir envíos automáticos. Los mensajes se envían a Formspree, que los entrega al correo verificado en la cuenta que creó el formulario.
+
+Para conectar el formulario:
+
+1. Crea una cuenta en [Formspree](https://formspree.io/) y un formulario para CodeNest.
+2. Verifica la dirección de correo que recibirá los mensajes.
+3. Copia el ID del formulario y sustituye `YOUR_FORM_ID` en `script.js` por ese ID.
+4. Publica de nuevo el sitio y envía una prueba desde la web publicada.
+
+Hasta que se configure un ID real, el formulario no afirma que el mensaje fue enviado y muestra un aviso de que todavía no está conectado.
 
 La página puede desplegarse en GitHub Pages, Netlify, Vercel o cualquier hosting de archivos estáticos. Sustituye el dominio canónico y las URLs Open Graph de `index.html`, y cambia las URLs sociales de ejemplo por los perfiles oficiales.
 
 ### Publicación recomendada
 
 1. Reemplaza `https://codenest.dev/` por el dominio real en `canonical`, `og:url` y la configuración de despliegue.
-2. Cambia los perfiles sociales de ejemplo y el endpoint del formulario por los datos oficiales.
-3. Sirve el sitio por HTTPS y comprueba las rutas internas, los enlaces externos y el formulario en un viewport móvil antes de publicar.
+2. Cambia los perfiles sociales de ejemplo por los perfiles oficiales.
+3. Configura y prueba el formulario de Formspree antes de publicar.
+4. Sirve el sitio por HTTPS y comprueba las rutas internas, los enlaces externos y el formulario en un viewport móvil antes de publicar.
 
 ## Accesibilidad y calidad
 
