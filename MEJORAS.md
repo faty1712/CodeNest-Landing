@@ -12,6 +12,7 @@ Esta revisión compara la versión anterior (`56567d3`) con los cambios de inter
 | Privacidad | No se explicaba qué ocurría con los datos del formulario. | Se informa al usuario que su consulta se enviará a CodeNest para recibir respuesta. |
 | Accesibilidad | Algunos iconos decorativos se anunciaban junto con el texto y no se marcaba de forma explícita el estado inválido. | Se ocultan esos iconos a tecnologías de asistencia y se actualiza `aria-invalid` al validar. |
 | Responsive | Los estilos de navegación estaban duplicados, lo que dificultaba el mantenimiento de la interfaz. | Se consolidaron las reglas de la barra de navegación y se conservaron los ajustes adaptables existentes. |
+| Portada en tablet | La fila del hero conservaba `min-vh-100` y centraba verticalmente el texto aunque el panel lateral estuviera oculto, creando un espacio vacío grande. | Entre 768 y 992 px de ancho, la portada ahora usa altura natural y alinea el contenido arriba, manteniendo el espaciado actual en teléfonos y escritorio. |
 
 ## Verificación
 
