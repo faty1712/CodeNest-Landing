@@ -33,29 +33,31 @@
   </head>
   <body>
     <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-    <nav class="navbar navbar-expand-lg fixed-top" aria-label="Navegación principal">
-      <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="#inicio" aria-label="CodeNest inicio">
-          <img src="logo.png" alt="Logotipo de CodeNest" class="brand-logo">
-        </a>
+    <header>
+      <nav class="navbar navbar-expand-lg fixed-top" aria-label="Navegación principal">
+        <div class="container">
+          <a class="navbar-brand d-flex align-items-center gap-2" href="#inicio" aria-label="CodeNest inicio">
+            <img src="logo.png" alt="Logotipo de CodeNest" class="brand-logo">
+          </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menú de navegación">
-          <i class="bi bi-list"></i>
-        </button>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menú de navegación">
+            <i class="bi bi-list"></i>
+          </button>
 
-        <div class="collapse navbar-collapse" id="mainNav">
-          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
-            <li class="nav-item"><a class="nav-link" href="#cursos">Cursos</a></li>
-            <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
-            <li class="nav-item"><a class="nav-link" href="#testimonios">Testimonios</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
-          </ul>
-          <a class="btn btn-primary rounded-pill px-4" href="#contacto">Inscríbete</a>
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+              <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+              <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
+              <li class="nav-item"><a class="nav-link" href="#cursos">Cursos</a></li>
+              <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+              <li class="nav-item"><a class="nav-link" href="#testimonios">Testimonios</a></li>
+              <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+            </ul>
+            <a class="btn btn-primary rounded-pill px-4" href="#contacto">Inscríbete</a>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
 
     <main id="contenido-principal">
       <section id="inicio" class="hero-section" aria-labelledby="hero-title">
@@ -453,10 +455,10 @@
               <p class="section-text mt-3">Si quieres aprender programación desde cero, construir un portafolio y acceder a nuevas oportunidades laborales, CodeNest te acompaña.</p>
 
               <ul class="contact-list">
-                <li><i class="bi bi-geo-alt"></i> El Salvador</li>
+                <li><i class="bi bi-geo-alt" aria-hidden="true"></i> El Salvador</li>
                 <li><i class="bi bi-envelope" aria-hidden="true"></i> <a href="mailto:contacto@codenest.dev">contacto@codenest.dev</a></li>
                 <li><i class="bi bi-telephone" aria-hidden="true"></i> <a href="tel:+50300000000">+503 0000-0000</a></li>
-                <li><i class="bi bi-clock"></i> Lunes a sábado · 8:00 a.m. a 6:00 p.m.</li>
+                <li><i class="bi bi-clock" aria-hidden="true"></i> Lunes a sábado · 8:00 a.m. a 6:00 p.m.</li>
               </ul>
 
               <div class="socials mt-4">
@@ -478,17 +480,17 @@
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="name">Nombre</label>
-                    <input id="name" name="name" type="text" class="form-control" placeholder="Tu nombre" autocomplete="name" minlength="2" maxlength="80" required aria-describedby="nameError" />
-                    <div id="nameError" class="invalid-feedback">Escribe tu nombre (mínimo 2 caracteres).</div>
+                    <input id="name" name="name" type="text" class="form-control" placeholder="Tu nombre" autocomplete="name" minlength="2" maxlength="80" required aria-describedby="nameError" data-validate />
+                    <div id="nameError" class="invalid-feedback">Escribe entre 2 y 80 caracteres.</div>
                   </div>
                   <div class="col-md-6">
                     <label for="email">Correo electrónico</label>
-                    <input id="email" name="email" type="email" class="form-control" placeholder="correo@ejemplo.com" autocomplete="email" maxlength="254" required aria-describedby="emailError" />
+                    <input id="email" name="email" type="email" class="form-control" placeholder="correo@ejemplo.com" autocomplete="email" maxlength="254" required aria-describedby="emailError" data-validate />
                     <div id="emailError" class="invalid-feedback">Introduce un correo electrónico válido.</div>
                   </div>
                   <div class="col-12">
                     <label for="interest">Me interesa</label>
-                    <select id="interest" name="interest" class="form-select" required aria-describedby="interestError">
+                    <select id="interest" name="interest" class="form-select" required aria-describedby="interestError" data-validate>
                       <option value="" selected disabled>Selecciona una ruta</option>
                       <option value="Fundamentos de programación">Fundamentos de programación</option>
                       <option value="Desarrollo web Front-End">Desarrollo web Front-End</option>
@@ -500,11 +502,12 @@
                   </div>
                   <div class="col-12">
                     <label for="message">Mensaje</label>
-                    <textarea id="message" name="message" class="form-control" rows="5" placeholder="Cuéntanos qué te gustaría aprender..." minlength="10" maxlength="2000" required aria-describedby="messageError"></textarea>
-                    <div id="messageError" class="invalid-feedback">Cuéntanos un poco más (mínimo 10 caracteres).</div>
+                    <textarea id="message" name="message" class="form-control" rows="5" placeholder="Cuéntanos qué te gustaría aprender..." minlength="10" maxlength="2000" required aria-describedby="messageError" data-validate></textarea>
+                    <div id="messageError" class="invalid-feedback">Escribe entre 10 y 2000 caracteres.</div>
                   </div>
                   <div class="col-12">
                     <button type="submit" class="btn btn-primary rounded-pill px-4">Enviar mensaje</button>
+                    <p class="form-privacy-note mt-3">Tu mensaje se enviará a través de Formspree para que CodeNest pueda responder a tu consulta.</p>
                   </div>
                 </div>
               </form>

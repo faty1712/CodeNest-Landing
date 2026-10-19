@@ -17,9 +17,7 @@ Landing page institucional de CodeNest, una academia de programación orientada 
 ├── styles.css    # Identidad visual y responsive
 ├── script.js     # Interacciones y validación del formulario
 ├── README.md
-├── .gitignore
-└── .github/
-    └── ISSUE_TEMPLATE/ # Plantillas para reportes y mejoras
+└── MEJORAS.md    # Comparativa de mejoras de la versión anterior
 ```
 
 La página está organizada por secciones semánticas (`header`/navegación, `main`, `section` y `footer`) y usa componentes Bootstrap para la navegación responsive, acordeón, carrusel, grid y formularios. La identidad visual vive en `styles.css`, con variables reutilizables, estados de foco, contraste consistente y breakpoints móviles.
@@ -44,7 +42,7 @@ La página puede desplegarse en GitHub Pages, Netlify, Vercel o cualquier hostin
 
 ### Publicación recomendada
 
-1. Reemplaza `https://codenest.dev/` por el dominio real en `canonical`, `og:url` y la configuración de despliegue.
+1. Actualiza la URL pública actual en `canonical`, `og:url`, los datos estructurados y la configuración de despliegue si cambia el dominio.
 2. Cambia los perfiles sociales de ejemplo por los perfiles oficiales.
 3. Configura y prueba el formulario de Formspree antes de publicar.
 4. Sirve el sitio por HTTPS y comprueba las rutas internas, los enlaces externos y el formulario en un viewport móvil antes de publicar.
@@ -56,6 +54,10 @@ La página puede desplegarse en GitHub Pages, Netlify, Vercel o cualquier hostin
 - Imágenes no críticas con `loading="lazy"` y dimensiones declaradas para reducir cambios de layout.
 - Navegación con estado activo, cierre del menú móvil y aviso alternativo cuando JavaScript está desactivado.
 - Verificación recomendada: Lighthouse (Performance, Accessibility, Best Practices y SEO), W3C Nu HTML Checker y DevTools en viewport móvil.
+
+## Historial de mejoras
+
+Consulta [MEJORAS.md](MEJORAS.md) para ver los cambios de esta revisión comparados con la versión anterior.
 
 ## Nota sobre datos institucionales
 

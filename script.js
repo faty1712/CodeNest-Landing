@@ -6,36 +6,64 @@ const formMessage = document.getElementById("formMessage");
 function showFormMessage(message, type) {
   formMessage.className = `alert custom-alert mt-3 ${type}`;
   formMessage.setAttribute("role", type === "alert-danger" ? "alert" : "status");
+  formMessage.setAttribute("aria-live", type === "alert-danger" ? "assertive" : "polite");
   formMessage.classList.remove("d-none");
   const icon = document.createElement("i");
-  icon.className = `bi ${type === "alert-success" ? "bi-check-circle-fill" : "bi-info-circle-fill"} me-2`;
+  icon.className = `bi ${type === "alert-success" ? "bi-check-circle-fill" : "bi-exclamation-circle-fill"} me-2`;
   icon.setAttribute("aria-hidden", "true");
   formMessage.replaceChildren(icon, document.createTextNode(message));
   formMessage.focus();
 }
 
 function validateField(field) {
+  const trimmedLength = field.value.trim().length;
+  const minimumLength = Number(field.minLength);
+  let customError = "";
+
   if (field.id === "name" || field.id === "message") {
-    const minimumLength = Number(field.minLength);
-    const trimmedLength = field.value.trim().length;
-    field.setCustomValidity(trimmedLength < minimumLength
-      ? `Escribe al menos ${minimumLength} caracteres.`
-      : "");
+    if (trimmedLength < minimumLength) {
+      customError = `Escribe al menos ${minimumLength} caracteres.`;
+    }
   }
 
+  field.setCustomValidity(customError);
   const isValid = field.checkValidity();
   field.classList.toggle("is-invalid", !isValid);
-  field.classList.toggle("is-valid", isValid && field.value.trim().length > 0);
+  field.classList.toggle("is-valid", isValid && trimmedLength > 0);
+
+  const feedback = document.getElementById(field.getAttribute("aria-describedby"));
+  field.setAttribute("aria-invalid", String(!isValid));
+  if (feedback) {
+    if (isValid) {
+      feedback.textContent = field.dataset.defaultFeedback;
+    } else if (field.validity.valueMissing) {
+      feedback.textContent = "Completa este campo.";
+    } else if (field.id === "email") {
+      feedback.textContent = "Introduce un correo electrónico válido.";
+    } else if (field.validity.tooLong) {
+      feedback.textContent = `Usa un máximo de ${field.maxLength} caracteres.`;
+    } else if (customError) {
+      feedback.textContent = `Escribe entre ${minimumLength} y ${field.maxLength} caracteres.`;
+    }
+  }
+
   return isValid;
 }
 
 if (form) {
-  const fields = [...form.querySelectorAll("input:not([type='hidden']), select, textarea")];
+  const fields = [...form.querySelectorAll("[data-validate]")];
   const submitButton = form.querySelector("button[type='submit']");
 
   fields.forEach((field) => {
+    const feedback = document.getElementById(field.getAttribute("aria-describedby"));
+    field.dataset.defaultFeedback = feedback?.textContent ?? "";
     field.addEventListener("blur", () => validateField(field));
     field.addEventListener("input", () => {
+      formMessage.classList.add("d-none");
+      if (field.classList.contains("is-invalid")) validateField(field);
+    });
+    field.addEventListener("change", () => {
+      formMessage.classList.add("d-none");
       if (field.classList.contains("is-invalid")) validateField(field);
     });
   });
@@ -49,7 +77,7 @@ if (form) {
       return;
     }
 
-    if (form.elements.company.value) {
+    if (form.elements.namedItem("_gotcha")?.value) {
       form.reset();
       return;
     }
@@ -64,7 +92,12 @@ if (form) {
         headers: { Accept: "application/json" },
         body: data,
       });
-      const result = await response.json();
+      let result = {};
+      try {
+        result = await response.json();
+      } catch (error) {
+        if (!response.ok) throw error;
+      }
       if (!response.ok) {
         const errorMessage = result.errors?.map((item) => item.message).join(" ") || `HTTP ${response.status}`;
         throw new Error(errorMessage);
