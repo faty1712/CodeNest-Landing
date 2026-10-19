@@ -36,16 +36,9 @@ Después abre <http://localhost:8000>.
 
 ## Formulario y despliegue
 
-El formulario valida nombre, correo, ruta de interés y mensaje en el navegador; recorta espacios al enviar, limita la longitud de los campos y usa un campo trampa para reducir envíos automáticos. Los mensajes se envían a Formspree, que los entrega al correo verificado en la cuenta que creó el formulario.
+El formulario valida nombre, correo, ruta de interés y mensaje en el navegador; recorta espacios al enviar, limita la longitud de los campos y usa un campo trampa para reducir envíos automáticos. Los mensajes se envían a Formspree, que los entrega al correo verificado en la cuenta que creó el formulario. El endpoint está configurado en `script.js`.
 
-Para conectar el formulario:
-
-1. Crea una cuenta en [Formspree](https://formspree.io/) y un formulario para CodeNest.
-2. Verifica la dirección de correo que recibirá los mensajes.
-3. Copia el ID del formulario y sustituye `YOUR_FORM_ID` en `script.js` por ese ID.
-4. Publica de nuevo el sitio y envía una prueba desde la web publicada.
-
-Hasta que se configure un ID real, el formulario no afirma que el mensaje fue enviado y muestra un aviso de que todavía no está conectado.
+Para recibir mensajes, verifica el correo receptor en la cuenta de Formspree. Si sustituyes el formulario, actualiza el endpoint en `script.js`. Envía una prueba desde la web publicada para comprobar la recepción.
 
 La página puede desplegarse en GitHub Pages, Netlify, Vercel o cualquier hosting de archivos estáticos. Sustituye el dominio canónico y las URLs Open Graph de `index.html`, y cambia las URLs sociales de ejemplo por los perfiles oficiales.
 

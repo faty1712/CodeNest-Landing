@@ -1,5 +1,4 @@
-// Replace YOUR_FORM_ID with the endpoint ID from the CodeNest form in Formspree.
-const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+const FORM_ENDPOINT = "https://formspree.io/f/xdeajylq";
 
 const form = document.getElementById("contactForm");
 const formMessage = document.getElementById("formMessage");
@@ -52,11 +51,6 @@ if (form) {
 
     if (form.elements.company.value) {
       form.reset();
-      return;
-    }
-
-    if (FORM_ENDPOINT.includes("YOUR_FORM_ID")) {
-      showFormMessage("El formulario todavía no está conectado. Escríbenos directamente al correo de contacto.", "alert-danger");
       return;
     }
 
